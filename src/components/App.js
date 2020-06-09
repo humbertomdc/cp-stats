@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import ProfileCard from './ProfileCard'
+import ProfileCard from './ProfileCard/ProfileCard'
 
 
 class App extends React.Component {
@@ -8,23 +8,29 @@ class App extends React.Component {
         userProfile: {
             handle: null,
             image: null,
-            maxRank: null,
+            country: null,
+            rank: null,
+            currentRating: null,
+            maxRating: null,
         }
     };
 
     componentDidMount() {
         axios.get("https://codeforces.com/api/user.info", {
             params: {
-                handles: "Humberto"
+                handles: "MiFaFaOvO"
             }
         }).then(response => {
             console.log(response.data.result[0])
             const user = response.data.result[0];
             this.setState({ 
                 userProfile: {
-                    handel: user.handle,
+                    handle: user.handle,
                     image: user.titlePhoto,
-                    maxRank: user.maxRank,
+                    country: user.country,
+                    rank: user.rank,
+                    currentRating: user.rating,
+                    maxRating: user.maxRating,
                 }
             });
         });
@@ -32,10 +38,17 @@ class App extends React.Component {
 
     render() {
         return (
-            <div className="ui feed">
-                <div className="event">
+            <div
+                className="ui padded grid"
+                style={{ minWidth: "1000px", minHeight: "100vh", backgroundColor: "#f8fcfd" }}
+            >
+                <div className="four wide column">
                     <ProfileCard userProfile={this.state.userProfile} />
-                    <div className="ui segment" style={{ marginLeft: '10px', marginTop: '0px', width: '70vw'}} ></div>
+                </div>
+                <div className="eleven wide column">
+                    <div className="ui fluid segment">
+                        
+                    </div>
                 </div>
             </div>
         );
