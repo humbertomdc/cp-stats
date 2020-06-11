@@ -31,6 +31,8 @@ class App extends React.Component {
                     handle: user.handle,
                     image: user.titlePhoto,
                     country: user.country,
+                    city: user.city,
+                    organization: user.organization,
                     rank: user.rank,
                     currentRating: user.rating,
                     maxRating: user.maxRating,
