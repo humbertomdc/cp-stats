@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import { Grid, Rail, Ref, Segment, Sticky, Container } from 'semantic-ui-react';
 import ProfileCard from './ProfileCard/ProfileCard'
+
 
 
 class App extends React.Component {
@@ -12,8 +14,9 @@ class App extends React.Component {
             rank: null,
             currentRating: null,
             maxRating: null,
-        }
+        },
     };
+    contextRef = React.createRef()
 
     componentDidMount() {
         axios.get("https://codeforces.com/api/user.info", {
@@ -38,19 +41,29 @@ class App extends React.Component {
 
     render() {
         return (
-            <div
-                className="ui padded grid"
-                style={{ minWidth: "1000px", minHeight: "100vh", backgroundColor: "#f8fcfd" }}
-            >
-                <div className="four wide column">
-                    <ProfileCard userProfile={this.state.userProfile} />
-                </div>
-                <div className="eleven wide column">
-                    <div className="ui fluid segment">
-                        
-                    </div>
-                </div>
-            </div>
+            <Container fluid style={{ minWidth: "1400px", backgroundColor: "black" }}>
+                <Grid centered columns={2} padded>
+                    <Grid.Column stretched>
+                        <Ref innerRef={this.contextRef}>
+                            <Segment>
+                                <ProfileCard userProfile={this.state.userProfile} />
+                                <ProfileCard userProfile={this.state.userProfile} />
+                                <ProfileCard userProfile={this.state.userProfile} />
+                                <ProfileCard userProfile={this.state.userProfile} />
+                                {/* Main View */}
+                                <Rail position='left' close>
+                                    <Sticky
+                                        context={this.contextRef}
+                                        offset={15}    
+                                    >
+                                        <ProfileCard userProfile={this.state.userProfile} />
+                                    </Sticky>
+                                </Rail>
+                            </Segment>
+                        </Ref>
+                    </Grid.Column>
+                </Grid>
+            </Container>
         );
     }
 }

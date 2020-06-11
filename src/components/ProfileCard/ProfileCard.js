@@ -1,5 +1,6 @@
 import './ProfileCard.css'
 import React from 'react';
+import { Card, Image, Icon } from 'semantic-ui-react';
 import { flag } from 'country-emoji';
 
 class ProfileCard extends React.Component {
