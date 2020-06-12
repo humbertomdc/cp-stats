@@ -1,6 +1,6 @@
 import './ProfileCard.css'
 import React from 'react';
-import { Card, Image, Grid, Segment, Divider, Header, Label } from 'semantic-ui-react';
+import { Card, Image, Grid, Segment, Divider, Header } from 'semantic-ui-react';
 import { flag } from 'country-emoji';
 
 class ProfileCard extends React.Component {
@@ -19,13 +19,14 @@ class ProfileCard extends React.Component {
 
     render() {
         const user = this.props.userProfile;
-        const color = this.rankColor(parseInt(user.currentRating))
+        const color = this.rankColor(parseInt(user.rating))
+
         return (
             <Card color={color}>
                 <Card.Content>
-                    <Segment color={color} raised>
+                    <Segment color={color}>
                         <Image
-                            src={user.image}
+                            src={user.titlePhoto}
                             rounded
                             label={{
                                 as: "a",
@@ -42,7 +43,7 @@ class ProfileCard extends React.Component {
                     <Grid centered columns={2}>
                         <Grid.Column textAlign="center">
                             <Grid.Row>
-                                <Header size="medium">{user.currentRating}</Header>
+                                <Header size="medium">{user.rating}</Header>
                             </Grid.Row>
                             <Grid.Row>
                                 <Header size="small">Rating</Header>
