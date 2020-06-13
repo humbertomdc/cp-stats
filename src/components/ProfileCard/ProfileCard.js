@@ -2,23 +2,13 @@ import './ProfileCard.css'
 import React from 'react';
 import { Card, Image, Grid, Segment, Divider, Header } from 'semantic-ui-react';
 import { flag } from 'country-emoji';
+import * as CodeforcesData from '../../helpers/CodeforcesData';
 
 class ProfileCard extends React.Component {
 
-    rankColor = (rank) => {
-        if (rank < 1200) return "grey";
-        if (rank < 1400) return "green";
-        if (rank < 1600) return "teal";
-        if (rank < 1900) return "blue";
-        if (rank < 2100) return "purple";
-        if (rank < 2400) return "orange";
-        if (rank >= 2400) return "red";
-        return "black";
-    }
-
     render() {
         const user = this.props.userProfile;
-        const color = this.rankColor(parseInt(user.rating))
+        const color = CodeforcesData.rankColor(parseInt(user.rating))
 
         return (
             <Card color={color}>

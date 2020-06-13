@@ -1,12 +1,14 @@
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import { Segment, Dimmer, Loader } from 'semantic-ui-react';
+import * as LineChartHelper from '../helpers/LineChartHelper';
 
 const createLineChart = (data) => {
     return (
         <ResponsiveLine
             data={data}
-            margin={{ top: 5, right: 10, bottom: 5, left: 40 }}
+            margin={{ top: 5, right: 5, bottom: 5, left: 35 }}
+            curve="linear"
             xScale={{
                 type: "time",
                 format: `%Y-%m-%d`,
@@ -15,24 +17,49 @@ const createLineChart = (data) => {
             }}
             yScale={{
                 type: "linear",
-                min: 800,
+                min: 1000,
                 max: 3800,
             }}
             xFormat="time:%Y-%m-%d"
             axisBottom={{
-                format: '%Y %b %d',
-                tickValues: 'every 100 years',
-                tickRotation: 90,
-                legendOffset: -12,
+                format: '%Y',
+                tickValues: 'every 1 years',
+                tickSize: 0,
+                tickRotation: 0,
             }}
-            enableGridX={false}
+            enableGridX={true}
             enableGridY={true}
-            colors={{ scheme: "nivo" }}
-            pointSize={4}
-            pointColor={"black"}
-            pointBorderWidth={2}
-            pointBorderColor={{ from: "serieColor" }}
+            gridYValues={[1200, 1400, 1600, 1900, 2100, 2300, 2400, 2600, 3000]}
+            enableSlices="x"
+            sliceTooltip={({ slice }) => LineChartHelper.createToolTip(slice)}
+            colors={["grey"]}
+            borderColor={{
+                from: 'color',
+                modifiers: [
+                    ['darker', .1],
+                    ['opacity', .1]
+                ]
+            }}
+            lineWidth={2}
+            pointSize={2}
+            pointColor="white"
+            pointBorderWidth={4}
+            pointBorderColor={{ theme: 'labels.text.fill' }}
+            layers={[
+                'grid',
+                'markers',
+                'areas',
+                LineChartHelper.makeLayers,
+                'lines',
+                'slices',
+                'crosshair',
+                'axes',
+                'points',
+                'legends',
+            ]}
             useMesh={true}
+            motionStiffness={95}
+            motionDamping={20}
         />
     );
 }
@@ -45,13 +72,13 @@ const displayLoadingView = () => {
     );
 }
 
-class RatingLineChart extends React.Component { 
+class RatingLineChart extends React.Component {
     render() {
         const data = this.props.ratingData;
         const lineChart = data ? createLineChart(data) : displayLoadingView();
 
         return (
-            <Segment style={{ height: "400px" }}>
+            <Segment style={{ height: "350px"}}>
                 {lineChart}
             </Segment>
         );

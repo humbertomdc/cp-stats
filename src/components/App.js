@@ -25,8 +25,7 @@ class App extends React.Component {
         CodeforcesAPI.getUserRating(this.state.userHandle).then((rating) => {
             // Preprocess data.
             const data = ProcessData.toChartData(rating);
-            var dates = ProcessData.rangeBetweenDates(data[0]["x"], data[data.length - 1]["x"]);
-            this.setState({ userRating: [{  id: "rating", dates: dates, data: data }] });
+            this.setState({ userRating: [{  id: "rating", data: data }] });
         });
     }
 
