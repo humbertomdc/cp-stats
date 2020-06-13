@@ -4,7 +4,6 @@ import { Card, Image, Grid, Segment, Divider, Header } from 'semantic-ui-react';
 import { flag } from 'country-emoji';
 
 class ProfileCard extends React.Component {
-    state = { coloredRankRectHeight: null };
 
     rankColor = (rank) => {
         if (rank < 1200) return "grey";

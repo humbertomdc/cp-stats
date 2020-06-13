@@ -1,12 +1,15 @@
 import 'semantic-ui-css/semantic.min.css'
 import React from 'react';
 import * as CodeforcesAPI from '../api/CodeforcesAPI';
+import * as ProcessData from '../api/ProcessData';
 import { Grid, Rail, Ref, Segment, Sticky, Container } from 'semantic-ui-react';
 import ProfileCard from './ProfileCard/ProfileCard'
+import RatingLineChart from './RatingLineChart'
 
 
 class App extends React.Component {
     state = {
+        userHandle: "MiFaFaOvO",
         userInfo: {},
         userRating: null,
     };
@@ -14,14 +17,16 @@ class App extends React.Component {
 
     componentDidMount() {
         // Get user info.
-        CodeforcesAPI.getUserInfo("MiFaFaOvO").then((user) => {
+        CodeforcesAPI.getUserInfo(this.state.userHandle).then((user) => {
             this.setState({ userInfo: user });
         });
 
         // Get user rating history.
-        CodeforcesAPI.getUserRating("MiFaFaOvO").then((rating) => {
-            this.setState({ userRating: rating });
-            console.log(this.state.userRating);
+        CodeforcesAPI.getUserRating(this.state.userHandle).then((rating) => {
+            // Preprocess data.
+            const data = ProcessData.toChartData(rating);
+            var dates = ProcessData.rangeBetweenDates(data[0]["x"], data[data.length - 1]["x"]);
+            this.setState({ userRating: [{  id: "rating", dates: dates, data: data }] });
         });
     }
 
@@ -32,11 +37,12 @@ class App extends React.Component {
                     <Grid.Column stretched>
                         <Ref innerRef={this.contextRef}>
                             <Segment>
-                                <ProfileCard userProfile={this.state.userInfo} />
-                                <ProfileCard userProfile={this.state.userInfo} />
-                                <ProfileCard userProfile={this.state.userInfo} />
-                                <ProfileCard userProfile={this.state.userInfo} />
                                 {/* Main View */}
+                                <RatingLineChart ratingData={this.state.userRating}/>
+                                <ProfileCard userProfile={this.state.userInfo} />
+                                <ProfileCard userProfile={this.state.userInfo} />
+                                <ProfileCard userProfile={this.state.userInfo} />
+                                <ProfileCard userProfile={this.state.userInfo} />
                                 <Rail position='left' close>
                                     <Sticky
                                         context={this.contextRef}
