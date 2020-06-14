@@ -1,7 +1,8 @@
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
-import { Segment, Dimmer, Loader } from 'semantic-ui-react';
+import { Segment } from 'semantic-ui-react';
 import * as LineChartHelper from '../helpers/LineChartHelper';
+import * as ExtraComponents from '../helpers/ExtraComponents';
 
 const createLineChart = (data) => {
     return (
@@ -64,18 +65,10 @@ const createLineChart = (data) => {
     );
 }
 
-const displayLoadingView = () => {
-    return (
-        <Dimmer active inverted>
-            <Loader size="large" inverted></Loader>
-        </Dimmer>
-    );
-}
-
 class RatingLineChart extends React.Component {
     render() {
         const data = this.props.ratingData;
-        const lineChart = data ? createLineChart(data) : displayLoadingView();
+        const lineChart = data ? createLineChart(data) : ExtraComponents.loadingView();
 
         return (
             <Segment style={{ height: "350px"}}>

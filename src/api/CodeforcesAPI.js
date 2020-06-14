@@ -15,3 +15,11 @@ export const getUserRating = (handle) => {
         }
     }).then(response => response.data.result);
 }
+
+export const getUserStatus = (handle) => {
+    return axios.get("https://codeforces.com/api/user.status", {
+        params: {
+            handle: handle
+        }
+    }).then(response => response.data.result);
+}

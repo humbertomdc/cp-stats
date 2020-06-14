@@ -1,8 +1,8 @@
-import './ProfileCard.css'
+import '../style/index.css'
 import React from 'react';
 import { Card, Image, Grid, Segment, Divider, Header } from 'semantic-ui-react';
 import { flag } from 'country-emoji';
-import * as CodeforcesData from '../../helpers/CodeforcesData';
+import * as CodeforcesData from '../helpers/CodeforcesData';
 
 class ProfileCard extends React.Component {
 
