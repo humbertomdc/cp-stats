@@ -1,3 +1,36 @@
+import React from 'react';
+import { Grid, Divider } from 'semantic-ui-react';
+
+export const customTooltip = (totalVerdicts) => {
+    console.log(totalVerdicts);
+    return (
+        ({ id, value }) => (
+            <div style={{ textAlign: "center" }}>
+            {id}
+            <Divider fitted />
+            <Grid columns={2}>
+                <Grid.Column>
+                    <Grid.Row>
+                        <strong>Total:</strong>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <strong>Rate:</strong>
+                    </Grid.Row>
+                </Grid.Column>
+                <Grid.Column textAlign="right">
+                    <Grid.Row>
+                        {value}
+                    </Grid.Row>
+                    <Grid.Row>
+                        {(100 * parseInt(value) / parseInt(totalVerdicts)).toFixed(2)}%
+                    </Grid.Row>
+                </Grid.Column>
+            </Grid>
+            </div>
+        )
+    );
+}
+
 export const getDefs = () => {
     return (
         [

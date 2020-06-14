@@ -1,10 +1,11 @@
+import '../style/index.css'
 import React from 'react';
 import { ResponsivePie } from '@nivo/pie';
-import { Segment, Container, Statistic, Icon } from 'semantic-ui-react';
+import { Segment, Container, Statistic } from 'semantic-ui-react';
 import * as PieChartHelper from '../helpers/PieChartHelper';
 import * as ExtraComponents from '../helpers/ExtraComponents';
 
-const createPieChart = (data) => {
+const createPieChart = (data, totalVerdicts) => {
     return (
         <ResponsivePie
             data={data}
@@ -32,33 +33,36 @@ const createPieChart = (data) => {
             motionDamping={20}
             defs={PieChartHelper.getDefs()}
             fill={PieChartHelper.getVerdictFills()}
+            tooltip={PieChartHelper.customTooltip(totalVerdicts)}
+            
         />
     );
 }
 
 class VerdictPieChart extends React.Component {
 
-    getAcceptanceRate(data) {
+    getTotalVerdicts(data) {
         var total = 0;
-        var oks = 0;
         data.forEach(element => {
-            if (element.id === "OK") {
-                oks += parseInt(element.value);
-            }
             total += parseInt(element.value);
         });
-        return (100 * oks / total).toFixed(0);
+        return total;
+    }
+
+    formatNumberCommas(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
     render() {
         const data = this.props.verdictData;
-        const pieChart = data ? createPieChart(data) : ExtraComponents.loadingView();
-        const rate = data ? this.getAcceptanceRate(data) : "0";
+        const totalVerdicts = data ? this.getTotalVerdicts(data) : 0;
+        const pieChart = data ? createPieChart(data, totalVerdicts) : ExtraComponents.loadingView();
+        const formattedTotalVerdicts = this.formatNumberCommas(totalVerdicts)
         return (
             <Segment style={{ height: "500px"}}>
-                <Statistic size="huge" style={{ position: "absolute", height: "100%", width: "100%", justifyContent: "center", left: "0", top: "0" }}>
-                    <Statistic.Value style={{ color: "#4f4f4f" }}>{rate}<Icon size="small" name="percent"/></Statistic.Value>
-                    <Statistic.Label style={{ color: "#4f4f4f" }}>Acceptance Rate</Statistic.Label>
+                <Statistic size="medium" style={{ position: "absolute", height: "100%", width: "100%", justifyContent: "center", left: "0", top: "0" }}>
+                    <Statistic.Value style={{ color: "#4f4f4f" }}>{formattedTotalVerdicts}</Statistic.Value>
+                    <Statistic.Label style={{ color: "#4f4f4f" }}>Total Verdicts</Statistic.Label>
                 </Statistic>
                 <Container style={{ zIndex: "1", height: "100%"}}>
                     {pieChart}
