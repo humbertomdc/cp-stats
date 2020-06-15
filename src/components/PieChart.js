@@ -5,7 +5,7 @@ import { Segment, Container, Statistic } from 'semantic-ui-react';
 import * as PieChartHelper from '../helpers/PieChartHelper';
 import * as ExtraComponents from '../helpers/ExtraComponents';
 
-const createPieChart = (data, totalVerdicts) => {
+const createPieChart = (data, totalData, isVerdict) => {
     return (
         <ResponsivePie
             data={data}
@@ -31,9 +31,9 @@ const createPieChart = (data, totalVerdicts) => {
             animate={true}
             motionStiffness={95}
             motionDamping={20}
-            defs={PieChartHelper.getDefs()}
-            fill={PieChartHelper.getVerdictFills()}
-            tooltip={PieChartHelper.customTooltip(totalVerdicts)}
+            defs={isVerdict ? PieChartHelper.getVerdictDefs() : PieChartHelper.getSubmittedDefs()}
+            fill={isVerdict ? PieChartHelper.getVerdictFills() : PieChartHelper.getSubmittedFills(data)}
+            tooltip={PieChartHelper.customTooltip(totalData)}
             
         />
     );
@@ -41,28 +41,25 @@ const createPieChart = (data, totalVerdicts) => {
 
 class VerdictPieChart extends React.Component {
 
-    getTotalVerdicts(data) {
-        var total = 0;
-        data.forEach(element => {
-            total += parseInt(element.value);
-        });
-        return total;
-    }
-
     formatNumberCommas(num) {
+        num = parseInt(num);
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
     render() {
-        const data = this.props.verdictData;
-        const totalVerdicts = data ? this.getTotalVerdicts(data) : 0;
-        const pieChart = data ? createPieChart(data, totalVerdicts) : ExtraComponents.loadingView();
-        const formattedTotalVerdicts = this.formatNumberCommas(totalVerdicts)
+        const data = this.props.data;
+        const isVerdict = this.props.isVerdict;
+        const stats = this.props.statsNumber;
+        const statsLabel = this.props.statsLabel;
+        const statsSize = this.props.statsSize;
+        const pieChart = data ? createPieChart(data, stats, isVerdict) : ExtraComponents.loadingView();
+        const formattedTotalVerdicts = this.formatNumberCommas(stats)
+        
         return (
             <Segment style={{ height: "500px"}}>
-                <Statistic size="medium" style={{ position: "absolute", height: "100%", width: "100%", justifyContent: "center", left: "0", top: "0" }}>
+                <Statistic size={statsSize} style={{ position: "absolute", height: "100%", width: "100%", justifyContent: "center", left: "0", top: "0" }}>
                     <Statistic.Value style={{ color: "#4f4f4f" }}>{formattedTotalVerdicts}</Statistic.Value>
-                    <Statistic.Label style={{ color: "#4f4f4f" }}>Total Verdicts</Statistic.Label>
+                    <Statistic.Label style={{ color: "#4f4f4f" }}>{statsLabel}</Statistic.Label>
                 </Statistic>
                 <Container style={{ zIndex: "1", height: "100%"}}>
                     {pieChart}

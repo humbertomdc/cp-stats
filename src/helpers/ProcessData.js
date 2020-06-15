@@ -36,3 +36,31 @@ export const parseVeredictData = (data) => {
         }
     });
 }
+
+export const parseTagsData = (data) => {
+    var dataMap = new Map();
+    var total = 0;
+    data.forEach(element => {
+        if (element.verdict === "OK") {
+            total += 1;
+            element.problem.tags.forEach(tag => {
+                if (!dataMap.has(tag)) {
+                    dataMap.set(tag, 1);
+                }
+                else {
+                    const newVal = dataMap.get(tag) + 1;
+                    dataMap.delete(tag);
+                    dataMap.set(tag, newVal);
+                }
+            });
+        }
+    });
+    
+    return [Array.from(dataMap).map(function(pair) {
+
+        return {
+            id: pair[0],
+            value: pair[1],
+        }
+    }), total];
+}

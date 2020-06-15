@@ -1,37 +1,51 @@
+import '../style/index.css'
 import React from 'react';
 import { Grid, Divider } from 'semantic-ui-react';
 
 export const customTooltip = (totalVerdicts) => {
-    console.log(totalVerdicts);
     return (
         ({ id, value }) => (
             <div style={{ textAlign: "center" }}>
-            {id}
-            <Divider fitted />
-            <Grid columns={2}>
-                <Grid.Column>
-                    <Grid.Row>
-                        <strong>Total:</strong>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <strong>Rate:</strong>
-                    </Grid.Row>
-                </Grid.Column>
-                <Grid.Column textAlign="right">
-                    <Grid.Row>
-                        {value}
-                    </Grid.Row>
-                    <Grid.Row>
-                        {(100 * parseInt(value) / parseInt(totalVerdicts)).toFixed(2)}%
-                    </Grid.Row>
-                </Grid.Column>
-            </Grid>
+                <p>{id}</p>
+                <Divider fitted />
+                <Grid columns={2}>
+                    <Grid.Column textAlign="left">
+                        <Grid.Row>
+                            <strong>Total:</strong>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <strong>Rate:</strong>
+                        </Grid.Row>
+                    </Grid.Column>
+                    <Grid.Column textAlign="right">
+                        <Grid.Row>
+                            {value}
+                        </Grid.Row>
+                        <Grid.Row>
+                            {(100 * parseInt(value) / parseInt(totalVerdicts)).toFixed(2)}%
+                        </Grid.Row>
+                    </Grid.Column>
+                </Grid>
             </div>
         )
     );
 }
 
-export const getDefs = () => {
+export const getSubmittedDefs = () => {
+    return ([
+        {
+            id: 'submitted',
+            type: 'patternLines',
+            background: 'inherit',
+            color: 'rgba(255, 255, 255, 0.1)',
+            rotation: -45,
+            lineWidth: 2,
+            spacing: 6
+        }
+    ]);
+}
+
+export const getVerdictDefs = () => {
     return (
         [
             {
@@ -47,7 +61,7 @@ export const getDefs = () => {
                 id: 'wrong',
                 type: 'patternLines',
                 background: 'rgba(244, 117, 96, 1)', //red
-                color: 'rgba(255, 255, 255, 0.05)',
+                color: 'rgba(255, 255, 255, 0.1)',
                 rotation: -45,
                 lineWidth: 2,
                 spacing: 6
@@ -56,7 +70,7 @@ export const getDefs = () => {
                 id: 'compilation-error',
                 type: 'patternLines',
                 background: 'rgba(241, 225, 91, 1)', //yellow
-                color: 'rgba(255, 255, 255, 0.05)',
+                color: 'rgba(255, 255, 255, 0.1)',
                 rotation: -45,
                 lineWidth: 2,
                 spacing: 6
@@ -65,7 +79,7 @@ export const getDefs = () => {
                 id: 'time-limit-exceeded',
                 type: 'patternLines',
                 background: 'rgba(114, 211, 254, 1)', //baby blue
-                color: 'rgba(255, 255, 255, 0.05)',
+                color: 'rgba(255, 255, 255, 0.1)',
                 rotation: -45,
                 lineWidth: 2,
                 spacing: 6
@@ -74,19 +88,19 @@ export const getDefs = () => {
                 id: 'skipped',
                 type: 'patternLines',
                 background: 'rgba(194, 157, 253, 1)', //purple
-                color: 'rgba(255, 255, 255, 0.05)',
+                color: 'rgba(255, 255, 255, 0.1)',
             },
             {
                 id: 'challenged',
                 type: 'patternLines',
                 background: 'rgba(119, 157, 202, 1)', //blue
-                color: 'rgba(255, 255, 255, 0.05)',
+                color: 'rgba(255, 255, 255, 0.1)',
             },
             {
                 id: 'runtime-error',
                 type: 'patternLines',
                 background: 'rgba(232, 168, 56, 1)', //orange
-                color: 'rgba(255, 255, 255, 0.05)',
+                color: 'rgba(255, 255, 255, 0.1)',
                 rotation: -45,
                 lineWidth: 2,
                 spacing: 6
@@ -95,7 +109,7 @@ export const getDefs = () => {
                 id: 'memory-limit-exceeded',
                 type: 'patternLines',
                 background: 'rgba(97, 205, 187, 1)', //dark teal
-                color: 'rgba(255, 255, 255, 0.05)',
+                color: 'rgba(255, 255, 255, 0.1)',
                 rotation: -45,
                 lineWidth: 2,
                 spacing: 6
@@ -111,6 +125,21 @@ export const getDefs = () => {
             },
         ]
     );
+}
+
+export const getSubmittedFills = (data) => {
+    var arr = [];
+    data.forEach(element => {
+        arr.push(
+            {
+                match: {
+                    id: element.id
+                },
+                id: 'submitted'
+            }
+        );
+    });
+    return arr;
 }
 
 export const getVerdictFills = () => {

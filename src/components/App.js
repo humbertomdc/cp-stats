@@ -1,11 +1,11 @@
 import 'semantic-ui-css/semantic.min.css'
 import React from 'react';
 import * as CodeforcesAPI from '../api/CodeforcesAPI';
-import * as ProcessData from '../api/ProcessData';
+import * as ProcessData from '../helpers/ProcessData';
 import { Grid, Rail, Ref, Segment, Sticky, Container } from 'semantic-ui-react';
 import ProfileCard from './ProfileCard';
 import RatingLineChart from './RatingLineChart';
-import VerdictPieChart from './VerdictPieChart';
+import PieChart from './PieChart';
 
 class App extends React.Component {
     constructor(props) {
@@ -15,6 +15,9 @@ class App extends React.Component {
             userInfo: {},
             userRating: null,
             userVerdicts: null,
+            userTotalVeredicts: null,
+            userProblemTags: null,
+            userTotalProblemsSolved: null,
         }
         this.contextRef = React.createRef();
     }
@@ -35,8 +38,14 @@ class App extends React.Component {
         // Get user status.
         CodeforcesAPI.getUserStatus(this.state.userHandle).then((status) => {
             // Preprocess data.
-            const data = ProcessData.parseVeredictData(status);
-            this.setState({ userVerdicts: data });
+            const verdictData = ProcessData.parseVeredictData(status);
+            const [tagsData, totalSubmitted] = ProcessData.parseTagsData(status);
+            this.setState({
+                userVerdicts: verdictData,
+                userTotalVeredicts: status.length,
+                userProblemTags: tagsData,
+                userTotalProblemsSolved: totalSubmitted
+            });
         });
     }
 
@@ -44,7 +53,7 @@ class App extends React.Component {
         return (
             <Container fluid
                 style={{
-                    height: "100%",
+                    height: "100vh",
                     backgroundColor: "#f8fcfd"
                     }}
             >
@@ -56,10 +65,22 @@ class App extends React.Component {
                                 <RatingLineChart ratingData={this.state.userRating} />
                                 <Grid>
                                     <Grid.Column width={8}>
-                                        <VerdictPieChart verdictData={this.state.userVerdicts} />
+                                        <PieChart
+                                            data={this.state.userVerdicts}
+                                            isVerdict={true}
+                                            statsNumber={this.state.userTotalVeredicts}
+                                            statsLabel="Submitted"
+                                            statsSize="medium"
+                                        />
                                     </Grid.Column>
                                     <Grid.Column width={8}>
-                                        <VerdictPieChart verdictData={this.state.userVerdicts} />
+                                        <PieChart
+                                            data={this.state.userProblemTags}
+                                            isVerdict={false}
+                                            statsNumber={this.state.userTotalProblemsSolved}
+                                            statsLabel="Solved"
+                                            statsSize="medium"
+                                        />
                                     </Grid.Column>
                                 </Grid>
                                 <Rail position='left' close >
