@@ -89,12 +89,18 @@ export const getVerdictDefs = () => {
                 type: 'patternLines',
                 background: 'rgba(194, 157, 253, 1)', //purple
                 color: 'rgba(255, 255, 255, 0.1)',
+                rotation: -45,
+                lineWidth: 2,
+                spacing: 6
             },
             {
                 id: 'challenged',
                 type: 'patternLines',
                 background: 'rgba(119, 157, 202, 1)', //blue
                 color: 'rgba(255, 255, 255, 0.1)',
+                rotation: -45,
+                lineWidth: 2,
+                spacing: 6
             },
             {
                 id: 'runtime-error',

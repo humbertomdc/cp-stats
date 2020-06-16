@@ -2,7 +2,7 @@ import React from 'react';
 import { Segment, Grid, Divider, Label } from 'semantic-ui-react';
 import * as CodeforcesData from '../helpers/CodeforcesData';
 
-export const makeLayers = (props) => {
+export const ratingLayers = (props) => {
     const alpha = 0.75;
     const data = [
         { maxY: 1200, minY: 800, color: "rgba(204,204,204," + alpha + ")" },
@@ -30,7 +30,7 @@ export const makeLayers = (props) => {
     return <g>{components}</g>;
 }
 
-export const createToolTip = (slice) => {
+export const ratingToolTip = (slice) => {
     return (
         <Segment raised
             style={{
@@ -81,6 +81,40 @@ export const createToolTip = (slice) => {
                     </div>
                 </div>
             ))}
+        </Segment>
+    )
+}
+
+export const ratedUsersToolTip = (slice) => {
+    return (
+        <Segment raised
+            style={{
+                background: "white",
+                padding: "9px 12px",
+                border: "1px solid #ccc",
+
+                width: "150px",
+            }}
+        >
+            <Grid columns={2}>
+                <Grid.Column width={4}>
+                    <Grid.Row>
+                        <strong>Users: </strong>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <strong>Range: </strong>
+                    </Grid.Row>
+                </Grid.Column>
+                <Grid.Column width={12} textAlign="right">
+
+                    <Grid.Row>
+                        {slice.points[0].data.yFormatted}
+                    </Grid.Row>
+                    <Grid.Row>
+                        {slice.points[0].data.xFormatted} - {slice.points[0].data.x + slice.points[0].data.binSize - 1}
+                    </Grid.Row>
+                </Grid.Column>
+            </Grid>
         </Segment>
     )
 }

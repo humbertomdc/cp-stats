@@ -6,6 +6,7 @@ import { Grid, Rail, Ref, Segment, Sticky, Container } from 'semantic-ui-react';
 import ProfileCard from './ProfileCard';
 import RatingLineChart from './RatingLineChart';
 import PieChart from './PieChart';
+import LineChart from './LineChart';
 
 class App extends React.Component {
     constructor(props) {
@@ -18,6 +19,9 @@ class App extends React.Component {
             userTotalVeredicts: null,
             userProblemTags: null,
             userTotalProblemsSolved: null,
+            ratedListRaw: null,
+            ratedUsers: null,
+            ratedUsersBinSize: 10,
         }
         this.contextRef = React.createRef();
     }
@@ -26,6 +30,7 @@ class App extends React.Component {
         // Get user info.
         CodeforcesAPI.getUserInfo(this.state.userHandle).then((user) => {
             this.setState({ userInfo: user });
+            this.updateBinSize(0);
         });
 
         // Get user rating history.
@@ -47,15 +52,32 @@ class App extends React.Component {
                 userTotalProblemsSolved: totalSubmitted
             });
         });
+
+        // Get rated list.
+        CodeforcesAPI.getRatedList(false).then((ratedList) => {
+            // Process data.
+            const data = ProcessData.parseUsersData(ratedList, this.state.ratedUsersBinSize, this.state.userInfo.rating);
+            this.setState({ ratedListRaw: ratedList, ratedUsers: data });
+        });
+
+    }
+
+    updateBinSize = (value) => {
+        if (!this.state.ratedListRaw) return;
+        if (this.state.ratedUsersBinSize + value <= 100 && this.state.ratedUsersBinSize + value >= 10) {
+            const data = ProcessData.parseUsersData(this.state.ratedListRaw, this.state.ratedUsersBinSize + value, this.state.userInfo.rating);
+            this.setState({ ratedUsers: data, ratedUsersBinSize: this.state.ratedUsersBinSize + value });
+        }
     }
 
     render() {
         return (
-            <Container fluid
+            <Container
+                fluid
                 style={{
-                    height: "100vh",
+                    height: "100%",
                     backgroundColor: "#f8fcfd"
-                    }}
+                }}
             >
                 <Grid columns={2} centered padded >
                     <Grid.Column>
@@ -69,8 +91,8 @@ class App extends React.Component {
                                             data={this.state.userVerdicts}
                                             isVerdict={true}
                                             statsNumber={this.state.userTotalVeredicts}
-                                            statsLabel="Submitted"
-                                            statsSize="medium"
+                                            statsLabel="Submissions"
+                                            statsSize="small"
                                         />
                                     </Grid.Column>
                                     <Grid.Column width={8}>
@@ -79,10 +101,15 @@ class App extends React.Component {
                                             isVerdict={false}
                                             statsNumber={this.state.userTotalProblemsSolved}
                                             statsLabel="Solved"
-                                            statsSize="medium"
+                                            statsSize="small"
                                         />
                                     </Grid.Column>
                                 </Grid>
+                                <LineChart
+                                    data={this.state.ratedUsers}
+                                    binSize={this.state.ratedUsersBinSize}
+                                    onBinSizeChange={this.updateBinSize}
+                                />
                                 <Rail position='left' close >
                                     <Sticky
                                         context={this.contextRef}

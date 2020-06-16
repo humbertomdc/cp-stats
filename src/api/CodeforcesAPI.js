@@ -23,3 +23,11 @@ export const getUserStatus = (handle) => {
         }
     }).then(response => response.data.result);
 }
+
+export const getRatedList = (activeOnly) => {
+    return axios.get("https://codeforces.com/api/user.ratedList", {
+        params: {
+            activeOnly: activeOnly
+        }
+    }).then(response => response.data.result);
+}

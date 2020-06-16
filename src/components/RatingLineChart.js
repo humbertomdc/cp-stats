@@ -32,7 +32,7 @@ const createLineChart = (data) => {
             enableGridY={true}
             gridYValues={[1200, 1400, 1600, 1900, 2100, 2300, 2400, 2600, 3000]}
             enableSlices="x"
-            sliceTooltip={({ slice }) => LineChartHelper.createToolTip(slice)}
+            sliceTooltip={({ slice }) => LineChartHelper.ratingToolTip(slice)}
             colors={["grey"]}
             borderColor={{
                 from: 'color',
@@ -50,7 +50,7 @@ const createLineChart = (data) => {
                 'grid',
                 'markers',
                 'areas',
-                LineChartHelper.makeLayers,
+                LineChartHelper.ratingLayers,
                 'lines',
                 'slices',
                 'crosshair',
