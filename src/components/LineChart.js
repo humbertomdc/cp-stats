@@ -3,6 +3,7 @@ import { ResponsiveLine } from '@nivo/line';
 import { Segment, Container, Statistic, Button, List, Grid } from 'semantic-ui-react';
 import * as LineChartHelper from '../helpers/LineChartHelper';
 import * as ExtraComponents from '../helpers/ExtraComponents';
+import * as DataPresentation from '../helpers/DataPresentation';
 
 const createLineChart = (data) => {
     return (
@@ -48,10 +49,6 @@ class LineChart extends React.Component {
         this.props.onBinSizeChange(-5);
     }
 
-    didUpdateComponent = () => {
-        console.log(this.props.binSize);
-    }
-
     render () {
         const data = this.props.data;
         const binSize = this.props.binSize;
@@ -76,7 +73,7 @@ class LineChart extends React.Component {
                                 <Grid.Column width={10}>
                                     <Statistic>
                                         <Statistic.Label style={{ color: "#4f4f4f" }}>
-                                            ({entry.usersPerRank})
+                                            ({DataPresentation.formatNumberCommas(entry.usersPerRank)})
                                         </Statistic.Label>
                                     </Statistic>
                                 </Grid.Column>

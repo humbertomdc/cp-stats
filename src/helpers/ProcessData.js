@@ -83,7 +83,7 @@ export const parseUsersData = (data, binSize, userRating) => {
     var pos = null;
     var index = 0;
     data.forEach(user => {
-        var idx = parseInt((user.rating / binSize).toFixed(0));
+        var idx = Math.ceil(parseInt((user.rating / binSize)));
         if (idx >= 0 && arr[idx]) {
             arr[idx].y++;
         }
@@ -108,7 +108,7 @@ export const parseUsersData = (data, binSize, userRating) => {
     arr.forEach(entry => {
         entry.percentage = (100 * accum / data.length).toFixed(2);
         accum += entry.y;
-        usersPerRank += entry.y;
+
         if (entry.x >= ratings[idx]) {
             res.push(
                 {
@@ -124,6 +124,7 @@ export const parseUsersData = (data, binSize, userRating) => {
             usersPerRank = 0;
             idx++;
         }
+        usersPerRank += entry.y;
         entries.push(entry);
         prev = entry;
     })

@@ -4,6 +4,7 @@ import { ResponsivePie } from '@nivo/pie';
 import { Segment, Container, Statistic } from 'semantic-ui-react';
 import * as PieChartHelper from '../helpers/PieChartHelper';
 import * as ExtraComponents from '../helpers/ExtraComponents';
+import * as DataPresentation from '../helpers/DataPresentation';
 
 const createPieChart = (data, totalData, isVerdict) => {
     return (
@@ -34,17 +35,12 @@ const createPieChart = (data, totalData, isVerdict) => {
             defs={isVerdict ? PieChartHelper.getVerdictDefs() : PieChartHelper.getSubmittedDefs()}
             fill={isVerdict ? PieChartHelper.getVerdictFills() : PieChartHelper.getSubmittedFills(data)}
             tooltip={PieChartHelper.customTooltip(totalData)}
-            
+
         />
     );
 }
 
 class VerdictPieChart extends React.Component {
-
-    formatNumberCommas(num) {
-        num = parseInt(num);
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
 
     render() {
         const data = this.props.data;
@@ -53,8 +49,8 @@ class VerdictPieChart extends React.Component {
         const statsLabel = this.props.statsLabel;
         const statsSize = this.props.statsSize;
         const pieChart = data ? createPieChart(data, stats, isVerdict) : ExtraComponents.loadingView();
-        const formattedTotalVerdicts = this.formatNumberCommas(stats)
-        
+        const formattedTotalVerdicts = DataPresentation.formatNumberCommas(stats);
+
         return (
             <Segment style={{ height: "500px"}}>
                 <Statistic size={statsSize} style={{ position: "absolute", height: "100%", width: "100%", justifyContent: "center", left: "0", top: "0" }}>
