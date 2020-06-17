@@ -1,3 +1,5 @@
+import * as Colors from './Colors';
+
 export const parseRatingData = (data) => {
     return data.map(function(rate) {
         var date = new Date(rate.ratingUpdateTimeSeconds * 1000)
@@ -28,7 +30,7 @@ export const parseVeredictData = (data) => {
             dataMap.set(element.verdict, newVal);
         }
     })
-    
+
     return Array.from(dataMap).map(function(pair) {
         return {
             id: pair[0],
@@ -55,7 +57,7 @@ export const parseTagsData = (data) => {
             });
         }
     });
-    
+
     return [Array.from(dataMap).map(function(pair) {
 
         return {
@@ -73,10 +75,11 @@ export const parseUsersData = (data, binSize, userRating) => {
                 x: i - binSize,
                 y: 0,
                 binSize: binSize,
+                percentage: 0,
             }
         )
     }
-    
+
     var pos = null;
     var index = 0;
     data.forEach(user => {
@@ -95,23 +98,30 @@ export const parseUsersData = (data, binSize, userRating) => {
     var place = Math.floor(100 * (data.length - pos) / data.length);
 
     var res = [];
-    var ratings = [0, 1200, 1400, 1600, 1900, 2100, 2400, 3800 ]
-    var colors = [ "rgba(97, 97, 97, 1)", "rgba(97, 97, 97, 1)", "rgba(119, 221, 119, 1)", "rgba(97, 205, 187, 1)",
-                   "rgba(114, 211, 254, 1)", "rgba(194, 157, 253, 1)", "rgba(241, 225, 91, 1)", "rgba(244, 117, 96, 1)" ]
+    var ratings = [ 1200, 1400, 1600, 1900, 2100, 2400, 3800 ]
+    var rgbaColors = Colors.codeforcesScheme1();
     var idx = 0;
     var entries = [];
     var prev = {x: ratings[idx], y: 0}
+    var accum = 0;
+    var usersPerRank = 0;
     arr.forEach(entry => {
+        entry.percentage = (100 * accum / data.length).toFixed(2);
+        accum += entry.y;
+        usersPerRank += entry.y;
         if (entry.x >= ratings[idx]) {
             res.push(
                 {
                     id: ratings[idx],
                     place: place,
-                    color: colors[idx],
+                    color: rgbaColors[idx],
+                    usersPerRank: usersPerRank,
+                    usersPerRankPercentage: (100 * usersPerRank / data.length).toFixed(2),
                     data: entries
                 }
             );
             entries = [prev];
+            usersPerRank = 0;
             idx++;
         }
         entries.push(entry);
@@ -121,7 +131,9 @@ export const parseUsersData = (data, binSize, userRating) => {
         {
             id: ratings[idx],
             place: place,
-            color: colors[idx],
+            color: rgbaColors[idx],
+            usersPerRank: usersPerRank,
+            usersPerRankPercentage: (100 * usersPerRank / data.length).toFixed(2),
             data: entries
         }
     );

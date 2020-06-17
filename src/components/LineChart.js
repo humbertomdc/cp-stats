@@ -1,6 +1,6 @@
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
-import { Segment, Container, Statistic, Button } from 'semantic-ui-react';
+import { Segment, Container, Statistic, Button, List, Grid } from 'semantic-ui-react';
 import * as LineChartHelper from '../helpers/LineChartHelper';
 import * as ExtraComponents from '../helpers/ExtraComponents';
 
@@ -58,17 +58,50 @@ class LineChart extends React.Component {
         const place = data ? data[0].place : 0;
         const lineChart = data ? createLineChart(data) : ExtraComponents.loadingView();
 
+        var rankList = null;
+        if (data) {
+            rankList = this.props.data.map((entry) => {
+                return (
+                    <List.Item>
+                        <List.Icon style={{ color: entry.color }} name='circle' />
+                        <List.Content>
+                            <Grid columns={2}>
+                                <Grid.Column width={6}>
+                                    <Statistic>
+                                        <Statistic.Label style={{ color: "#4f4f4f" }}>
+                                            {entry.usersPerRankPercentage}%
+                                        </Statistic.Label>
+                                    </Statistic>
+                                </Grid.Column>
+                                <Grid.Column width={10}>
+                                    <Statistic>
+                                        <Statistic.Label style={{ color: "#4f4f4f" }}>
+                                            ({entry.usersPerRank})
+                                        </Statistic.Label>
+                                    </Statistic>
+                                </Grid.Column>
+                            </Grid>
+                        </List.Content>
+                    </List.Item>
+                );
+            });
+        }
+
         return (
             <Segment style={{ height: "500px", width: "100%" }}>
-                <Container style={{ position: "absolute", height: "80%", width: "20%", top: 24, right: 12 }}>
+                <Container style={{ position: "absolute", height: "90%", width: "20%", top: 24, right: 12 }}>
                     <Container style={{ position: "relative", height: "30%" }}>
-                        <Statistic ref={this.labelRef} size="large" style={{ display: "flex" }}>
+                        <Statistic size="large" style={{ display: "flex" }}>
                             <Statistic.Label style={{ color: "#4f4f4f" }}>Better than</Statistic.Label>
                             <Statistic.Value style={{ color: "#4f4f4f" }}>{place}%</Statistic.Value>
                             <Statistic.Label style={{ color: "#4f4f4f" }}>of other users</Statistic.Label>
                         </Statistic>
                     </Container>
-                    <Container style={{ height: "40%" }} />
+                    <Container style={{ height: "40%", width: "75%", backgroundColor: "" }} >
+                        <List>
+                            {rankList}
+                        </List>
+                    </Container>
                     <Container style={{ position: "relative", width: "50%", height: "30%" }}>
                         <Statistic size="small" style={{ display: "flex" }}>
                             <Statistic.Value style={{ color: "#4f4f4f" }}>{binSize}</Statistic.Value>
@@ -93,7 +126,7 @@ class LineChart extends React.Component {
             </Segment>
         );
     }
-    
+
 }
 
 export default LineChart;

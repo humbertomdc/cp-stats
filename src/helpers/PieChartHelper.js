@@ -1,6 +1,7 @@
 import '../style/index.css'
 import React from 'react';
 import { Grid, Divider } from 'semantic-ui-react';
+import * as Colors from '../helpers/Colors'
 
 export const customTooltip = (totalVerdicts) => {
     return (
@@ -46,6 +47,34 @@ export const getSubmittedDefs = () => {
 }
 
 export const getVerdictDefs = () => {
+    const ids = [
+        "ok",
+        "wrong",
+        "compilation-error",
+        "time-limit-exceeded",
+        "skipped",
+        "challenged",
+        "runtime-error",
+        "memory-limit-exceeded",
+        "partial"
+    ]
+
+    ids.map((id, index) => {
+        return (
+            {
+                id: id,
+                type: "patternLines",
+                background: Colors.dataScheme1[index],
+                color: "rgba(255, 255, 255, 0.1",
+                rotation: -45,
+                lineWidth: 2,
+                spacing: 6
+            }
+        );
+    });
+}
+
+export const getVerdictDefs1 = () => {
     return (
         [
             {

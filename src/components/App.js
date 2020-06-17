@@ -113,7 +113,7 @@ class App extends React.Component {
                                 <Rail position='left' close >
                                     <Sticky
                                         context={this.contextRef}
-                                        offset={15}   
+                                        offset={15}
                                     >
                                         <ProfileCard userProfile={this.state.userInfo} />
                                     </Sticky>

@@ -102,13 +102,18 @@ export const ratedUsersToolTip = (slice) => {
                         <strong>Users: </strong>
                     </Grid.Row>
                     <Grid.Row>
+                        <strong>Above: </strong>
+                    </Grid.Row>
+                    <Grid.Row>
                         <strong>Range: </strong>
                     </Grid.Row>
                 </Grid.Column>
                 <Grid.Column width={12} textAlign="right">
-
                     <Grid.Row>
                         {slice.points[0].data.yFormatted}
+                    </Grid.Row>
+                    <Grid.Row>
+                        {slice.points[0].data.percentage}%
                     </Grid.Row>
                     <Grid.Row>
                         {slice.points[0].data.xFormatted} - {slice.points[0].data.x + slice.points[0].data.binSize - 1}
