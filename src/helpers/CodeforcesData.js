@@ -22,3 +22,37 @@ export const rank = (rating) => {
     if (rating >= 3000) return "Legendary Grandmaster";
     return "Undefined";
 }
+
+export const verdictIds = () => {
+    return (
+        [
+            "AC",
+            "WA",
+            "CPE",
+            "TLE",
+            "RTE",
+            "MLE",
+            "OTHER"
+        ]
+    );
+}
+
+export const getVerdictId = (verdict) => {
+    const ids = verdictIds();
+    switch (verdict) {
+        case "OK":
+            return ids[0];
+        case "WRONG_ANSWER":
+            return ids[1];
+        case "COMPILATION_ERROR":
+            return ids[2];
+        case "TIME_LIMIT_EXCEEDED":
+            return ids[3];
+        case "RUNTIME_ERROR":
+            return ids[4];
+        case "MEMORY_LIMIT_EXCEEDED":
+            return ids[5];
+        default:
+            return ids[6];
+    }
+}

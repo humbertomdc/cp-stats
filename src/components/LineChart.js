@@ -42,11 +42,11 @@ const createLineChart = (data) => {
 class LineChart extends React.Component {
 
     handleAdd = (value) => {
-        this.props.onBinSizeChange(5);
+        this.props.onBinSizeChange(10);
     }
 
     handleRemove = (value) => {
-        this.props.onBinSizeChange(-5);
+        this.props.onBinSizeChange(-10);
     }
 
     render () {
@@ -91,7 +91,7 @@ class LineChart extends React.Component {
                         <Statistic size="large" style={{ display: "flex" }}>
                             <Statistic.Label style={{ color: "#4f4f4f" }}>Better than</Statistic.Label>
                             <Statistic.Value style={{ color: "#4f4f4f" }}>{place}%</Statistic.Value>
-                            <Statistic.Label style={{ color: "#4f4f4f" }}>of other users</Statistic.Label>
+                            <Statistic.Label style={{ color: "#4f4f4f" }}>of users</Statistic.Label>
                         </Statistic>
                     </Container>
                     <Container style={{ height: "40%", width: "75%", backgroundColor: "" }} >

@@ -1,4 +1,5 @@
 import * as Colors from './Colors';
+import * as CodeforcesData from './CodeforcesData';
 
 export const parseRatingData = (data) => {
     return data.map(function(rate) {
@@ -21,13 +22,14 @@ export const parseRatingData = (data) => {
 export const parseVeredictData = (data) => {
     var dataMap = new Map();
     data.forEach(element => {
-        if (!dataMap.has(element.verdict)) {
-            dataMap.set(element.verdict, 1);
+        const id = CodeforcesData.getVerdictId(element.verdict);
+        if (!dataMap.has(id)) {
+            dataMap.set(id, 1);
         }
         else {
-            const newVal = dataMap.get(element.verdict) + 1;
-            dataMap.delete(element.verdict);
-            dataMap.set(element.verdict, newVal);
+            const newVal = dataMap.get(id) + 1;
+            dataMap.delete(id);
+            dataMap.set(id, newVal);
         }
     })
 

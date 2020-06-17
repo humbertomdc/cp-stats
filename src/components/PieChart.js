@@ -18,15 +18,7 @@ const createPieChart = (data, totalData, isVerdict) => {
             borderWidth={1}
             borderColor={{ from: 'dark', modifiers: [ [ 'darker', 2 ] ] }}
             enableRadialLabels={false}
-            radialLabelsSkipAngle={10}
-            radialLabelsTextXOffset={6}
-            radialLabelsTextColor="#333333"
-            radialLabelsLinkOffset={0}
-            radialLabelsLinkDiagonalLength={20}
-            radialLabelsLinkHorizontalLength={12}
-            radialLabelsLinkStrokeWidth={2}
-            radialLabelsLinkColor={{ from: 'color' }}
-            slicesLabelsSkipAngle={40}
+            slicesLabelsSkipAngle={15}
             slicesLabelsTextColor="#333333"
             sliceLabel="id"
             animate={true}

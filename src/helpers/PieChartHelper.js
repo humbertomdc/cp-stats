@@ -2,6 +2,7 @@ import '../style/index.css'
 import React from 'react';
 import { Grid, Divider } from 'semantic-ui-react';
 import * as Colors from '../helpers/Colors'
+import * as CodeforcesData from '../helpers/CodeforcesData';
 
 export const customTooltip = (totalVerdicts) => {
     return (
@@ -32,208 +33,73 @@ export const customTooltip = (totalVerdicts) => {
     );
 }
 
-export const getSubmittedDefs = () => {
-    return ([
-        {
-            id: 'submitted',
-            type: 'patternLines',
-            background: 'inherit',
-            color: 'rgba(255, 255, 255, 0.1)',
-            rotation: -45,
-            lineWidth: 2,
-            spacing: 6
-        }
-    ]);
-}
-
 export const getVerdictDefs = () => {
-    const ids = [
-        "ok",
-        "wrong",
-        "compilation-error",
-        "time-limit-exceeded",
-        "skipped",
-        "challenged",
-        "runtime-error",
-        "memory-limit-exceeded",
-        "partial"
-    ]
-
-    ids.map((id, index) => {
+    const ids = CodeforcesData.verdictIds();
+    const colors = Colors.dataScheme1();
+    const defs = ids.map((id, index) => {
         return (
             {
                 id: id,
                 type: "patternLines",
-                background: Colors.dataScheme1[index],
-                color: "rgba(255, 255, 255, 0.1",
+                background: colors[index],
+                color: "rgba(255, 255, 255, 0.1)",
                 rotation: -45,
                 lineWidth: 2,
                 spacing: 6
             }
         );
     });
+
+    return defs
 }
 
-export const getVerdictDefs1 = () => {
-    return (
-        [
+export const getVerdictFills = () => {
+    const ids = CodeforcesData.verdictIds();
+    const fills = ids.map(id => {
+        return (
             {
-                id: 'ok',
+                match: {
+                    id: id
+                },
+                id: id
+            }
+        );
+    });
+
+    return fills;
+}
+
+export const getSubmittedDefs = () => {
+    const colors = Colors.dataScheme1();
+    const defs = colors.map((color, index) => {
+        return (
+            {
+                id: index,
                 type: 'patternLines',
-                background: 'rgba(119, 221, 119, 1)', //green
+                background: color,
                 color: 'rgba(255, 255, 255, 0.1)',
                 rotation: -45,
                 lineWidth: 2,
                 spacing: 6
-            },
-            {
-                id: 'wrong',
-                type: 'patternLines',
-                background: 'rgba(244, 117, 96, 1)', //red
-                color: 'rgba(255, 255, 255, 0.1)',
-                rotation: -45,
-                lineWidth: 2,
-                spacing: 6
-            },
-            {
-                id: 'compilation-error',
-                type: 'patternLines',
-                background: 'rgba(241, 225, 91, 1)', //yellow
-                color: 'rgba(255, 255, 255, 0.1)',
-                rotation: -45,
-                lineWidth: 2,
-                spacing: 6
-            },
-            {
-                id: 'time-limit-exceeded',
-                type: 'patternLines',
-                background: 'rgba(114, 211, 254, 1)', //baby blue
-                color: 'rgba(255, 255, 255, 0.1)',
-                rotation: -45,
-                lineWidth: 2,
-                spacing: 6
-            },
-            {
-                id: 'skipped',
-                type: 'patternLines',
-                background: 'rgba(194, 157, 253, 1)', //purple
-                color: 'rgba(255, 255, 255, 0.1)',
-                rotation: -45,
-                lineWidth: 2,
-                spacing: 6
-            },
-            {
-                id: 'challenged',
-                type: 'patternLines',
-                background: 'rgba(119, 157, 202, 1)', //blue
-                color: 'rgba(255, 255, 255, 0.1)',
-                rotation: -45,
-                lineWidth: 2,
-                spacing: 6
-            },
-            {
-                id: 'runtime-error',
-                type: 'patternLines',
-                background: 'rgba(232, 168, 56, 1)', //orange
-                color: 'rgba(255, 255, 255, 0.1)',
-                rotation: -45,
-                lineWidth: 2,
-                spacing: 6
-            },
-            {
-                id: 'memory-limit-exceeded',
-                type: 'patternLines',
-                background: 'rgba(97, 205, 187, 1)', //dark teal
-                color: 'rgba(255, 255, 255, 0.1)',
-                rotation: -45,
-                lineWidth: 2,
-                spacing: 6
-            },
-            {
-                id: 'partial',
-                type: 'patternLines',
-                background: 'rgba(232, 193, 160, 1)', //cream
-                color: 'rgba(255, 255, 255, 0.05)',
-                rotation: -45,
-                lineWidth: 2,
-                spacing: 6
-            },
-        ]
-    );
+            }
+        );
+    });
+    
+    return defs;
 }
 
 export const getSubmittedFills = (data) => {
-    var arr = [];
-    data.forEach(element => {
-        arr.push(
+    const mod = Colors.dataScheme1().length;
+    const arr = data.map((element, index) => {
+        return (
             {
                 match: {
                     id: element.id
                 },
-                id: 'submitted'
+                id: index % mod
             }
         );
     });
-    return arr;
-}
 
-export const getVerdictFills = () => {
-    return (
-        [
-            {
-                match: {
-                    id: 'OK'
-                },
-                id: 'ok'
-            },
-            {
-                match: {
-                    id: 'WRONG_ANSWER'
-                },
-                id: 'wrong'
-            },
-            {
-                match: {
-                    id: 'COMPILATION_ERROR'
-                },
-                id: 'compilation-error'
-            },
-            {
-                match: {
-                    id: 'TIME_LIMIT_EXCEEDED'
-                },
-                id: 'time-limit-exceeded'
-            },
-            {
-                match: {
-                    id: 'SKIPPED'
-                },
-                id: 'skipped'
-            },
-            {
-                match: {
-                    id: 'CHALLENGED'
-                },
-                id: 'challenged'
-            },
-            {
-                match: {
-                    id: 'RUNTIME_ERROR'
-                },
-                id: 'runtime-error'
-            },
-            {
-                match: {
-                    id: 'MEMORY_LIMIT_EXCEEDED'
-                },
-                id: 'memory-limit-exceeded'
-            },
-            {
-                match: {
-                    id: 'PARTIAL'
-                },
-                id: 'partial'
-            },
-        ]
-    );
+    return arr;
 }
