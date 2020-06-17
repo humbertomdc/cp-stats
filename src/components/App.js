@@ -44,12 +44,13 @@ class App extends React.Component {
         CodeforcesAPI.getUserStatus(this.state.userHandle).then((status) => {
             // Preprocess data.
             const verdictData = ProcessData.parseVeredictData(status);
-            const [tagsData, totalSubmitted] = ProcessData.parseTagsData(status);
+            const tagsData = ProcessData.parseTagsData(status);
+            const totalSolved = ProcessData.totalSolved(status);
             this.setState({
                 userVerdicts: verdictData,
                 userTotalVeredicts: status.length,
                 userProblemTags: tagsData,
-                userTotalProblemsSolved: totalSubmitted
+                userTotalProblemsSolved: totalSolved
             });
         });
 
