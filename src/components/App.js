@@ -7,6 +7,7 @@ import ProfileCard from './ProfileCard';
 import RatingLineChart from './RatingLineChart';
 import PieChart from './PieChart';
 import LineChart from './LineChart';
+import RadarChart from './RadarChart';
 
 class App extends React.Component {
     constructor(props) {
@@ -19,6 +20,7 @@ class App extends React.Component {
             userTotalVeredicts: null,
             userProblemTags: null,
             userTotalProblemsSolved: null,
+            userStrengthsByTag: null,
             ratedListRaw: null,
             ratedUsers: null,
             ratedUsersBinSize: 10,
@@ -46,11 +48,13 @@ class App extends React.Component {
             const verdictData = ProcessData.parseVeredictData(status);
             const tagsData = ProcessData.parseTagsData(status);
             const totalSolved = ProcessData.totalSolved(status);
+            const strengthsByTag = ProcessData.parseStrengthsByTagData(status);
             this.setState({
                 userVerdicts: verdictData,
                 userTotalVeredicts: status.length,
                 userProblemTags: tagsData,
-                userTotalProblemsSolved: totalSolved
+                userTotalProblemsSolved: totalSolved,
+                userStrengthsByTag: strengthsByTag,
             });
         });
 
@@ -67,7 +71,10 @@ class App extends React.Component {
         if (!this.state.ratedListRaw) return;
         if (this.state.ratedUsersBinSize + value <= 100 && this.state.ratedUsersBinSize + value >= 10) {
             const data = ProcessData.parseUsersData(this.state.ratedListRaw, this.state.ratedUsersBinSize + value, this.state.userInfo.rating);
-            this.setState({ ratedUsers: data, ratedUsersBinSize: this.state.ratedUsersBinSize + value });
+            this.setState({
+                ratedUsers: data,
+                ratedUsersBinSize: this.state.ratedUsersBinSize + value
+            });
         }
     }
 
@@ -106,6 +113,7 @@ class App extends React.Component {
                                         />
                                     </Grid.Column>
                                 </Grid>
+                                <RadarChart data={this.state.userStrengthsByTag} />
                                 <LineChart
                                     data={this.state.ratedUsers}
                                     binSize={this.state.ratedUsersBinSize}

@@ -118,7 +118,7 @@ export const parseTagsData = (data) => {
         }
     });
     // Organize data and return it.
-    const res = Array.from(dataMap).map(function(pair) {
+    const res = Array.from(dataMap).map(pair => {
         return {
             id: pair[0],
             value: pair[1],
@@ -201,5 +201,68 @@ export const parseUsersData = (data, binSize, userRating) => {
         }
     );
 
+    return res;
+}
+
+/**
+ * Gets the average value from an array.
+ * If the length of the array is greater than maxSize
+ * then just the values from 0...maxSize are taken into account.
+ * @param  {[Number]} arr     Array of numbers.
+ * @param  {Number}   maxSize The max size for the array.
+ * @return {Number}           Average value in array.
+ */
+const tagAverageValue = (arr, maxSize) => {
+    // Sort the array in descending order.
+    var sortedArr = arr.sort(function(a, b) { return b - a; });
+    // If there are more than 10 items in the array we just take the first 10.
+    if (sortedArr.length >= maxSize) {
+        sortedArr = sortedArr.slice(0, maxSize);
+    }
+    // Return the average value of the array.
+    const avg = sortedArr.reduce((a, b) => a + b, 0) / sortedArr.length;
+    return Math.floor(avg);
+}
+
+export const parseStrengthsByTagData = (data) => {
+    var tagMap = new Map();
+    var solvedSet = new Set();
+    data.forEach(element => {
+        // Get the unique id for each problem.
+        // ContestId followed by the problem index.
+        // Ex. 123B
+        const problemId = element.problem.contestId + element.problem.index;
+        // Add the key to the set if the verdict is equal to "OK"
+        // and the key does not exist in the set.
+        if (!solvedSet.has(problemId) && element.verdict === "OK") {
+            solvedSet.add(problemId);
+            const problemRating = element.problem.rating;
+            const tags = element.problem.tags;
+            // Iterate over each tag in the tags array and push
+            // each problem rating to the corresponding array in
+            // in tagMap.
+            // The problem might have not rating so we check
+            // that problem rating is a number.
+            if (problemRating) {
+                tags.forEach(tag => {
+                    if (!tagMap.has(tag)) {
+                        tagMap.set(tag, [problemRating]);
+                    }
+                    else {
+                        tagMap.get(tag).push(problemRating);
+                    }
+                });
+            }
+        }
+    });
+
+    // Organize data in a presentable format and return it.
+    const res = Array.from(tagMap).map(pair => {
+        const avg = tagAverageValue(pair[1], 10);
+        return {
+            tag: pair[0],
+            avg: avg
+        }
+    });
     return res;
 }
