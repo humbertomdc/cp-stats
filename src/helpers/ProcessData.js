@@ -224,45 +224,89 @@ const tagAverageValue = (arr, maxSize) => {
     return Math.floor(avg);
 }
 
+/**
+ * Gets the frequency of tags from all problems.
+ * @param  {[String]} tags    Tags in a problem.
+ * @param  {Map}      tagsMap Map that stores frequency of tags.
+ * @return {Map}              Updated tagsMap.
+ */
+const getTagsFrequency = (tags, tagsMap) => {
+    // Iterate over each tag in the array and add 1 to
+    // the corresponding element in the map for each occurrence.
+    tags.forEach(tag => {
+        if (!tagsMap.has(tag)) {
+            tagsMap.set(tag, 1);
+        }
+        else {
+            const value = tagsMap.get(tag);
+            tagsMap.delete(tag);
+            tagsMap.set(tag, value + 1);
+        }
+    });
+    return tagsMap;
+};
+
+/**
+ * Gets the rating from each problem and adds it to the array of
+ * the corresponding tag.
+ * Arrays are organized in a map with tag as key.
+ * @param  {[String]} tags          Tags in a problem.
+ * @param  {Number}   problemRating Rating for a particular problem.
+ * @param  {Map}      solvedTagMap  Map of ratings for each tag.
+ * @return {Map}                    Updated solvedTagMap.
+ */
+const getSolvedTagsRatings = (tags, problemRating, solvedTagMap) => {
+    // The problem might have not rating so we check
+    // that problem rating is a number.
+    if (problemRating) {
+        // Iterate over each tag in the tags array and push
+        // each problem rating to the corresponding array in
+        // in solvedTagMap.
+        tags.forEach(tag => {
+            if (!solvedTagMap.has(tag)) {
+                solvedTagMap.set(tag, [problemRating]);
+            }
+            else {
+                solvedTagMap.get(tag).push(problemRating);
+            }
+        });
+    }
+    return solvedTagMap;
+}
+
 export const parseStrengthsByTagData = (data) => {
-    var tagMap = new Map();
+    var solvedTagMap = new Map();
     var solvedSet = new Set();
+    var tagsMap = new Map();
     data.forEach(element => {
         // Get the unique id for each problem.
         // ContestId followed by the problem index.
         // Ex. 123B
         const problemId = element.problem.contestId + element.problem.index;
+        // Get array of tags for each problem.
+        const tags = element.problem.tags;
         // Add the key to the set if the verdict is equal to "OK"
         // and the key does not exist in the set.
         if (!solvedSet.has(problemId) && element.verdict === "OK") {
             solvedSet.add(problemId);
             const problemRating = element.problem.rating;
-            const tags = element.problem.tags;
-            // Iterate over each tag in the tags array and push
-            // each problem rating to the corresponding array in
-            // in tagMap.
-            // The problem might have not rating so we check
-            // that problem rating is a number.
-            if (problemRating) {
-                tags.forEach(tag => {
-                    if (!tagMap.has(tag)) {
-                        tagMap.set(tag, [problemRating]);
-                    }
-                    else {
-                        tagMap.get(tag).push(problemRating);
-                    }
-                });
-            }
+            // Update solvedTagMap.
+            solvedTagMap = getSolvedTagsRatings(tags, problemRating, solvedTagMap);
         }
+        // Update tagsMap.
+        tagsMap = getTagsFrequency(tags, tagsMap);
     });
 
     // Organize data in a presentable format and return it.
-    const res = Array.from(tagMap).map(pair => {
-        const avg = tagAverageValue(pair[1], 10);
+    const res = Array.from(solvedTagMap).map(pair => {
+        const avg = tagAverageValue(pair[1], 5);
+        const acceptanceRate = (avg * pair[1].length / tagsMap.get(pair[0])).toFixed(2);
         return {
             tag: pair[0],
-            avg: avg
+            avg: avg,
+            acceptanceRate: acceptanceRate,
         }
     });
+
     return res;
 }

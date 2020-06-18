@@ -7,7 +7,7 @@ const createRadarChart = (data) => {
     return (
         <ResponsiveRadar
             data={data}
-            keys={[ "avg" ]}
+            keys={[ "avg", "acceptanceRate" ]}
             indexBy="tag"
             maxValue="auto"
             margin={{ top: 70, right: 80, bottom: 40, left: 80 }}
