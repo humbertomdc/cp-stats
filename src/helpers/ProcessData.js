@@ -274,6 +274,11 @@ const getSolvedTagsRatings = (tags, problemRating, solvedTagMap) => {
     return solvedTagMap;
 }
 
+/**
+ * Get strengths by tag and acceptance rate.
+ * @param  {[Object]} data Data receivde from the codeforces api.
+ * @return {[Object]}      Data ready to be presented in a chart.
+ */
 export const parseStrengthsByTagData = (data) => {
     var solvedTagMap = new Map();
     var solvedSet = new Set();
@@ -303,7 +308,7 @@ export const parseStrengthsByTagData = (data) => {
         const acceptanceRate = (avg * pair[1].length / tagsMap.get(pair[0])).toFixed(2);
         return {
             tag: pair[0],
-            avg: avg,
+            approximateRating: avg,
             acceptanceRate: acceptanceRate,
         }
     });
