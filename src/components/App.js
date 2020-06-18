@@ -1,8 +1,9 @@
 import 'semantic-ui-css/semantic.min.css'
+import '../style/index.css'
 import React from 'react';
 import * as CodeforcesAPI from '../api/CodeforcesAPI';
 import * as ProcessData from '../helpers/ProcessData';
-import { Grid, Rail, Ref, Segment, Sticky, Container } from 'semantic-ui-react';
+import { Menu, Header, Grid, Rail, Ref, Segment, Sticky, Container } from 'semantic-ui-react';
 import ProfileCard from './ProfileCard';
 import RatingLineChart from './RatingLineChart';
 import PieChart from './PieChart';
@@ -64,7 +65,6 @@ class App extends React.Component {
             const data = ProcessData.parseUsersData(ratedList, this.state.ratedUsersBinSize, this.state.userInfo.rating);
             this.setState({ ratedListRaw: ratedList, ratedUsers: data });
         });
-
     }
 
     updateBinSize = (value) => {
@@ -87,14 +87,24 @@ class App extends React.Component {
                     backgroundColor: "#f8fcfd"
                 }}
             >
-                <Grid columns={2} centered padded >
+                <Menu color="#4f4f4f" size="huge" fixed="top" inverted style={{ backgroundColor: "#212121" }}>
+                    <Menu.Item>
+                        Hello
+                    </Menu.Item>
+                    <Menu.Item position="right">
+                        Bye
+                    </Menu.Item>
+                </Menu>
+                <Grid columns={2} centered padded>
                     <Grid.Column>
                         <Ref innerRef={this.contextRef}>
-                            <Segment style={{ minWidth: "1000px" }} ref={this.mainSegmentRef}>
+                            <Segment style={{ minWidth: "1000px" }}>
                                 {/* Main View */}
+                                <Header as="h2" icon="user secret" content={`${this.state.userHandle}'s Rating`} style={{ color: "#3d3d3d" }} />
                                 <RatingLineChart ratingData={this.state.userRating} />
                                 <Grid>
                                     <Grid.Column width={8}>
+                                        <Header as="h2" content="Verdicts" textAlign="center" style={{ color: "#3d3d3d" }} />
                                         <PieChart
                                             data={this.state.userVerdicts}
                                             isVerdict={true}
@@ -104,6 +114,7 @@ class App extends React.Component {
                                         />
                                     </Grid.Column>
                                     <Grid.Column width={8}>
+                                        <Header as="h2" content="Tags" textAlign="center" style={{ color: "#3d3d3d" }} />
                                         <PieChart
                                             data={this.state.userProblemTags}
                                             isVerdict={false}
@@ -113,7 +124,9 @@ class App extends React.Component {
                                         />
                                     </Grid.Column>
                                 </Grid>
+                                <Header as="h2" icon="grav" content={`${this.state.userHandle}'s Strengths By Tag`} style={{ color: "#3d3d3d" }} />
                                 <RadarChart data={this.state.userStrengthsByTag} />
+                                <Header as="h2" icon="area graph" content="User Distribution" style={{ color: "#3d3d3d" }} />
                                 <LineChart
                                     data={this.state.ratedUsers}
                                     binSize={this.state.ratedUsersBinSize}
@@ -122,7 +135,7 @@ class App extends React.Component {
                                 <Rail position='left' close >
                                     <Sticky
                                         context={this.contextRef}
-                                        offset={15}
+                                        offset={55}
                                     >
                                         <ProfileCard userProfile={this.state.userInfo} />
                                     </Sticky>
