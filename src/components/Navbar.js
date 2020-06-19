@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Input, Header } from 'semantic-ui-react';
+import { Menu, Input, Header, Icon } from 'semantic-ui-react';
 
 class Navbar extends React.Component {
     state = {
@@ -42,9 +42,10 @@ class Navbar extends React.Component {
                         onChange={(event) => this.setState({ inputText: event.target.value })}
                     />
                 </Menu.Item>
-                <Menu.Item position="right">
-                    Bye
+                <Menu.Item href="https://github.com/humbertoatondo/cp-stats" target="_blank" position="right">
+                    <Icon name="github" size="large" fitted />
                 </Menu.Item>
+                <Menu.Item positon="right"  />
             </Menu>
         );
     }
