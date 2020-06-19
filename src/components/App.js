@@ -3,7 +3,8 @@ import '../style/index.css'
 import React from 'react';
 import * as CodeforcesAPI from '../api/CodeforcesAPI';
 import * as ProcessData from '../helpers/ProcessData';
-import { Menu, Header, Grid, Rail, Ref, Segment, Sticky, Container } from 'semantic-ui-react';
+import { Header, Grid, Rail, Ref, Segment, Sticky, Container } from 'semantic-ui-react';
+import Navbar from './Navbar';
 import ProfileCard from './ProfileCard';
 import RatingLineChart from './RatingLineChart';
 import PieChart from './PieChart';
@@ -30,6 +31,10 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        this.runApp();
+    }
+
+    runApp() {
         // Get user info.
         CodeforcesAPI.getUserInfo(this.state.userHandle).then((user) => {
             this.setState({ userInfo: user });
@@ -67,6 +72,11 @@ class App extends React.Component {
         });
     }
 
+    onSearchUser = (handle) => {
+        console.log(handle);
+        this.setState({ userHandle: handle }, this.runApp);
+    }
+
     updateBinSize = (value) => {
         if (!this.state.ratedListRaw) return;
         if (this.state.ratedUsersBinSize + value <= 100 && this.state.ratedUsersBinSize + value >= 10) {
@@ -87,18 +97,11 @@ class App extends React.Component {
                     backgroundColor: "#f8fcfd"
                 }}
             >
-                <Menu color="#4f4f4f" size="huge" fixed="top" inverted style={{ backgroundColor: "#212121" }}>
-                    <Menu.Item>
-                        Hello
-                    </Menu.Item>
-                    <Menu.Item position="right">
-                        Bye
-                    </Menu.Item>
-                </Menu>
+                <Navbar onSearchUser={this.onSearchUser}/>
                 <Grid columns={2} centered padded>
                     <Grid.Column>
                         <Ref innerRef={this.contextRef}>
-                            <Segment style={{ minWidth: "1000px" }}>
+                            <Segment style={{ minWidth: "1000px", top: 15 }}>
                                 {/* Main View */}
                                 <Header as="h2" icon="user secret" content={`${this.state.userHandle}'s Rating`} style={{ color: "#3d3d3d" }} />
                                 <RatingLineChart ratingData={this.state.userRating} />
@@ -135,7 +138,7 @@ class App extends React.Component {
                                 <Rail position='left' close >
                                     <Sticky
                                         context={this.contextRef}
-                                        offset={55}
+                                        offset={70}
                                     >
                                         <ProfileCard userProfile={this.state.userInfo} />
                                     </Sticky>

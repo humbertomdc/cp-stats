@@ -17,6 +17,7 @@ class ProfileCard extends React.Component {
                         <Image
                             src={user.titlePhoto}
                             rounded
+                            fluid
                             label={{
                                 as: "a",
                                 color: color,
