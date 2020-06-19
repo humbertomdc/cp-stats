@@ -15,7 +15,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userHandle: "MiFaFaOvO",
+            userHandle: "humberto",
             userInfo: {},
             userRating: null,
             userVerdicts: null,
@@ -74,8 +74,21 @@ class App extends React.Component {
 
     onSearchUser = (handle) => {
         console.log(handle);
-        this.setState({ userHandle: handle }, this.runApp);
+        this.setState({
+            userHandle: handle,
+            userInfo: {},
+            userRating: null,
+            userVerdicts: null,
+            userTotalVeredicts: null,
+            userProblemTags: null,
+            userTotalProblemsSolved: null,
+            userStrengthsByTag: null,
+            ratedListRaw: null,
+            ratedUsers: null,
+            ratedUsersBinSize: 10,
+        }, this.runApp);
     }
+
 
     updateBinSize = (value) => {
         if (!this.state.ratedListRaw) return;

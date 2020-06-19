@@ -28,7 +28,7 @@ const createRadarChart = (data) => {
                 `${RadarChartHelper.formatDotLabels(data)}`
             }
             dotLabelYOffset={-16}
-            colors={[ "rgba(119, 157, 202, 1)" , "rgba(244, 117, 96, 1)"]}
+            colors={[ "rgba(97, 97, 97, 1)" , "rgba(244, 117, 96, 1)" ]}
             fillOpacity={0.3}
             blendMode="multiply"
             animate={true}
@@ -46,6 +46,9 @@ class RadarChart extends React.Component {
     render() {
         const data = this.props.data;
         const radarChart = data ? createRadarChart(data) : ExtraComponents.loadingView();
+        if (!data) {
+            RadarChartHelper.initVariables();
+        }
         return (
             <Segment style={{ height: "700px" }}>
                 {radarChart}

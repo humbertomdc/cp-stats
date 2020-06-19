@@ -2,6 +2,11 @@
 var index = 0;
 var valsCounter = 0;
 
+export const initVariables = () => {
+    index = 0;
+    valsCounter = 0;
+}
+
 /**
  * Update helper counters that keep record of
  * what label we are at.
