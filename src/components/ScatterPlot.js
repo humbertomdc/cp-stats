@@ -7,7 +7,7 @@ const createScatterPlot = (data) => {
     return (
         <ResponsiveScatterPlot
             data={data}
-            margin={{ top: 10, right: 10, bottom: 50, left: 50 }}
+            margin={{ top: 10, right: 10, bottom: 50, left: 60 }}
             xScale={{ type: 'linear', min: 0, max: 'auto' }}
             //xFormat="kg"
             yScale={{ type: 'linear', min: 0, max: 'auto' }}
@@ -25,7 +25,7 @@ const createScatterPlot = (data) => {
                 tickRotation: 0,
                 legend: 'Rating',
                 legendPosition: 'middle',
-                legendOffset: 46
+                legendOffset: 32
             }}
             axisLeft={{
                 orient: 'left',
