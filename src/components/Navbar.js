@@ -8,8 +8,12 @@ class Navbar extends React.Component {
 
     keyPress = (event) => {
         if (event.keyCode === 13) {
-            console.log(this.state.inputText);
-            this.props.onSearchUser(this.state.inputText);
+            const handle = this.state.inputText;
+            this.props.history.push({
+                pathname: "/userStats",
+                search: `?handle=${handle}`,
+                state: { handle: handle }
+            });
         }
     }
 
