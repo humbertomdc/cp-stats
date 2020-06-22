@@ -5,7 +5,9 @@ export const getUserInfo = (handle) => {
         params: {
             handles: handle
         }
-    }).then(response => response.data.result[0]);
+    })
+    .then(response => response.data.result[0])
+    .catch(error => error.response.status)
 }
 
 export const getUserRating = (handle) => {

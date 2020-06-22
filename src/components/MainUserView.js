@@ -3,6 +3,7 @@ import { Header, Grid, Rail, Ref, Segment, Sticky, Container } from 'semantic-ui
 import React from 'react';
 import * as CodeforcesAPI from '../api/CodeforcesAPI';
 import * as ProcessData from '../helpers/ProcessData';
+import * as ExtraComponents from '../helpers/ExtraComponents';
 import Navbar from './Navbar';
 import ProfileCard from './ProfileCard';
 import RatingLineChart from './RatingLineChart';
@@ -20,7 +21,7 @@ class MainUserView extends React.Component {
             userHandle: "humberto",
             /** User information received from the codeforces api, userHandle was used
                 as a parameter for this call. This data will be used mainly in ProfileCard.*/
-            userInfo: {},
+            userInfo: null,
             /** Array of data containing user's contest history as well as its ranking throught time. */
             userRating: null,
             /** Array of data containing user's verdict history as well as its verdict rate. */
@@ -45,27 +46,40 @@ class MainUserView extends React.Component {
 
             rankByTimeOfExperience: null,
         }
+        /** This reference is used to create the rail where the user profile card is displayed. */
         this.contextRef = React.createRef();
-    }
-
-    searchUserHandle = () => {
-        // Get user info.
-        CodeforcesAPI.getUserInfo(this.state.userHandle).then((user) => {
-            this.setState({ userInfo: user }, this.runApp);
-        });
     }
 
     /**
      * Handles action when a new user is search on the search bar.
-     * If the user exists then the data is displayed.
+     * If the user exists then the data is displayed, if the user does not
+     * exist
      * TODO: Handle when user does not exist.
+     */
+    searchUserHandle = () => {
+        // Get user info.
+        CodeforcesAPI.getUserInfo(this.state.userHandle).then((response) => {
+            if (response !== 400) {
+                this.setState({ userInfo: response }, this.runApp);
+            }
+            else {
+                this.props.history.push({
+                    pathname: "/error",
+                });
+            }
+        });
+    }
+
+    /**
+     * Prepares view to load with new parameters and calls
+     * the function searchUserHandle when all state values are reseted.
      * @param {String} handle User handle to search.
      */
     onSearchUser = (handle) => {
         // Set all states to null and starts search.
         this.setState({
             userHandle: handle,
-            userInfo: {},
+            userInfo: null,
             userRating: null,
             userVerdicts: null,
             userTotalVeredicts: null,
@@ -153,16 +167,8 @@ class MainUserView extends React.Component {
         }
     }
 
-    render() {
+    mainView = () => {
         return (
-            <Container
-                fluid
-                style={{
-                    height: "100%",
-                    backgroundColor: "#f8fcfd"
-                }}
-            >
-            <Navbar history={this.props.history}/>
             <Grid columns={2} centered padded>
                 <Grid.Column>
                     <Ref innerRef={this.contextRef}>
@@ -192,7 +198,7 @@ class MainUserView extends React.Component {
                                     />
                                 </Grid.Column>
                             </Grid>
-                            <Header as="h2" icon="grav" content={`${this.state.userHandle}'s Strengths By Tag`} style={{ color: "#3d3d3d" }} />
+                            <Header as="h2" icon="chart pie" content={`${this.state.userHandle}'s Strengths By Tag`} style={{ color: "#3d3d3d" }} />
                             <RadarChart data={this.state.userStrengthsByTag} />
                             <Header as="h2" icon="area graph" content="User Distribution" style={{ color: "#3d3d3d" }} />
                             <LineChart
@@ -200,8 +206,11 @@ class MainUserView extends React.Component {
                                 binSize={this.state.ratedUsersBinSize}
                                 onBinSizeChange={this.updateBinSize}
                             />
-                            <Header as="h2" icon="fire" content="Rank vs Time" style={{ color: "#3d3d3d" }} />
-                            <ScatterPlot data={this.state.rankByTimeOfExperience} />
+                        <Header as="h2" icon="fire" content="Rating vs Time" style={{ color: "#3d3d3d" }} />
+                            <ScatterPlot
+                                data={this.state.rankByTimeOfExperience}
+                                userHandle={this.state.userHandle}
+                            />
                             <Rail position='left' close >
                                 <Sticky
                                     context={this.contextRef}
@@ -214,6 +223,21 @@ class MainUserView extends React.Component {
                     </Ref>
                 </Grid.Column>
             </Grid>
+        )
+    }
+
+    render() {
+        const view = this.state.userInfo ? this.mainView() : ExtraComponents.loadingView();
+        return (
+            <Container
+                fluid
+                style={{
+                    height: "100%",
+                    backgroundColor: "#f8fcfd"
+                }}
+            >
+            <Navbar history={this.props.history}/>
+            {view}
             </Container>
         )
     }

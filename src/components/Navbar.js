@@ -1,12 +1,20 @@
 import React from 'react';
 import { Menu, Input, Header, Icon } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 class Navbar extends React.Component {
     state = {
         inputText: null,
     }
 
+    /**
+     * Handles action when a key is pressed.
+     * If enter key is pressed then react router sends userStats
+     * route with inputText as parameter.
+     * @param {Object} event Key pressed event.
+     */
     keyPress = (event) => {
+        // The key code for enter is 13.
         if (event.keyCode === 13) {
             const handle = this.state.inputText;
             this.props.history.push({
@@ -29,9 +37,10 @@ class Navbar extends React.Component {
                     backgroundColor: "#212121"
                 }}
             >
-                <Menu.Item style={{ width: "24%", justifyContent: "right" }}>
+                <Menu.Item>
                     <Header
-                        as="h2"
+                        as={ Link } to="/"
+                        size="large"
                         content="Codeforces Stats"
                         style={{ color: "#ffffff" }}
                     />
@@ -49,7 +58,7 @@ class Navbar extends React.Component {
                 <Menu.Item href="https://github.com/humbertoatondo/cp-stats" target="_blank" position="right">
                     <Icon name="github" size="large" fitted />
                 </Menu.Item>
-                <Menu.Item positon="right"  />
+                
             </Menu>
         );
     }

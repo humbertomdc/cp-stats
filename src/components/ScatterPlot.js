@@ -1,17 +1,16 @@
-import React from 'react';
 import { ResponsiveScatterPlot } from '@nivo/scatterplot';
 import { Segment } from 'semantic-ui-react';
+
+import React from 'react';
 import * as ExtraComponents from '../helpers/ExtraComponents';
 
-const createScatterPlot = (data) => {
+const createScatterPlot = (data, userHandle) => {
     return (
         <ResponsiveScatterPlot
             data={data}
             margin={{ top: 10, right: 10, bottom: 50, left: 60 }}
             xScale={{ type: 'linear', min: 0, max: 'auto' }}
-            //xFormat="kg"
             yScale={{ type: 'linear', min: 0, max: 'auto' }}
-            //yFormat="kg"
             colors={d => d.color}
             blendMode="hue"
             animate={false}
@@ -34,7 +33,7 @@ const createScatterPlot = (data) => {
                 tickRotation: 0,
                 legend: 'Years',
                 legendPosition: 'middle',
-                legendOffset: -60
+                legendOffset: -32
             }}
             legends={[
                 {
@@ -63,12 +62,12 @@ const createScatterPlot = (data) => {
                 {
                     type: 'circle',
                     match: { index: data[0].group },
-                    noteX: 50,
-                    noteY: 50,
+                    noteX: -50,
+                    noteY: 25,
                     offset: 3,
-                    noteTextOffset: -3,
-                    noteWidth: 10,
-                    note: 'You are here.',
+                    noteTextOffset: -2,
+                    noteWidth: 12,
+                    note: `${userHandle}`,
                 },
             ]}
         />
@@ -78,8 +77,8 @@ const createScatterPlot = (data) => {
 class ScatterPlot extends React.Component {
     render() {
         const data = this.props.data;
-        if (data) console.log(data);
-        const scatterPlot = data ? createScatterPlot(data) : ExtraComponents.loadingView();
+        const userHandle = this.props.userHandle;
+        const scatterPlot = data ? createScatterPlot(data, userHandle) : ExtraComponents.loadingView();
         return (
             <Segment style={{ height: "500px" }}>
                 {scatterPlot}
