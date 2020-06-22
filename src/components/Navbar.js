@@ -24,7 +24,22 @@ class Navbar extends React.Component {
         }
     }
 
+    loadInput = () => {
+        return (
+            <Input
+                fluid
+                size="mini"
+                icon='search'
+                placeholder='Search user'
+                onKeyDown={this.keyPress}
+                onChange={(event) => this.setState({ inputText: event.target.value })}
+            />
+        )
+    }
+
     render() {
+        const isHomePage = this.props.isHomePage ? this.props.isHomePage : false;
+        const inputView = !isHomePage ? this.loadInput() : null
         return (
             <Menu
                 size="huge"
@@ -46,19 +61,12 @@ class Navbar extends React.Component {
                     />
                 </Menu.Item>
                 <Menu.Item style={{ width: "40%" }}>
-                    <Input
-                        fluid
-                        size="mini"
-                        icon='search'
-                        placeholder='Search user'
-                        onKeyDown={this.keyPress}
-                        onChange={(event) => this.setState({ inputText: event.target.value })}
-                    />
+                    {inputView}
                 </Menu.Item>
                 <Menu.Item href="https://github.com/humbertoatondo/cp-stats" target="_blank" position="right">
                     <Icon name="github" size="large" fitted />
                 </Menu.Item>
-                
+
             </Menu>
         );
     }

@@ -34,14 +34,15 @@ class Home extends React.Component {
                     alignItems: "center"
                 }}
             >
-                <Navbar history={this.props.history}/>
+                <Navbar isHomePage={true} history={this.props.history}/>
                 <div style={{ flex: 1, width: "100%", textAlign: "center"}}>
                     <Header
                         size="huge"
                         content="Codeforces Stats"
                         style={{
                             marginBottom: "24px",
-                            fontSize: "72px"
+                            fontSize: "72px",
+                            color: "#303030"
                         }}
                     />
                     <Input style={{ }}
