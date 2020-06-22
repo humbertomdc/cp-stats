@@ -12,7 +12,7 @@ class App extends React.Component {
             <BrowserRouter>
                 <Switch>
                     <Route path="/" exact component={Home} />
-                    <Route path="/userStats" exact component={MainUserView} />
+                    <Route path="/userStats/:handle" exact component={MainUserView} />
                     <Route path="/" render={() => <div>404</div>} />
                 </Switch>
             </BrowserRouter>

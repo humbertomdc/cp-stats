@@ -10,8 +10,7 @@ class Navbar extends React.Component {
         if (event.keyCode === 13) {
             const handle = this.state.inputText;
             this.props.history.push({
-                pathname: "/userStats",
-                search: `?handle=${handle}`,
+                pathname: `/userStats/${handle}`,
                 state: { handle: handle }
             });
         }
@@ -25,6 +24,7 @@ class Navbar extends React.Component {
                 inverted
                 secondary
                 style={{
+                    zIndex: "20",
                     height: "60px",
                     backgroundColor: "#212121"
                 }}

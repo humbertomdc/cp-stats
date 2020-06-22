@@ -1,8 +1,8 @@
+import { Header, Grid, Rail, Ref, Segment, Sticky, Container } from 'semantic-ui-react';
+
 import React from 'react';
 import * as CodeforcesAPI from '../api/CodeforcesAPI';
 import * as ProcessData from '../helpers/ProcessData';
-import { Header, Grid, Rail, Ref, Segment, Sticky, Container } from 'semantic-ui-react';
-import qs from 'qs';
 import Navbar from './Navbar';
 import ProfileCard from './ProfileCard';
 import RatingLineChart from './RatingLineChart';
@@ -76,7 +76,6 @@ class MainUserView extends React.Component {
             ratedUsers: null,
             ratedUsersBinSize: 10,
         }, this.searchUserHandle);
-        console.log(this.state.userInfo);
     }
 
     // If the user exists then we make the rest of the api calls
@@ -142,7 +141,7 @@ class MainUserView extends React.Component {
 
     componentDidMount = () => {
         // Get handle from parameters in the route.
-        const handle = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).handle;
+        const handle = this.props.match.params.handle;
         this.onSearchUser(handle);
     }
 

@@ -12,8 +12,7 @@ class Home extends React.Component {
         if (event.keyCode === 13) {
             const handle = this.state.inputText;
             this.props.history.push({
-                pathname: "/userStats",
-                search: `?handle=${handle}`,
+                pathname: `/userStats/${handle}`,
                 state: { handle: handle }
             });
         }
