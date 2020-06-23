@@ -4,7 +4,7 @@ import { Grid, Divider } from 'semantic-ui-react';
 import * as Colors from '../helpers/Colors'
 import * as CodeforcesData from '../helpers/CodeforcesData';
 
-export const customTooltip = (totalVerdicts) => {
+export const customTooltip = (totalData) => {
     return (
         ({ id, value }) => (
             <div style={{ textAlign: "center" }}>
@@ -24,7 +24,7 @@ export const customTooltip = (totalVerdicts) => {
                             {value}
                         </Grid.Row>
                         <Grid.Row>
-                            {(100 * parseInt(value) / parseInt(totalVerdicts)).toFixed(2)}%
+                            {(100 * parseInt(value) / parseInt(totalData)).toFixed(2)}%
                         </Grid.Row>
                     </Grid.Column>
                 </Grid>
@@ -84,7 +84,7 @@ export const getSubmittedDefs = () => {
             }
         );
     });
-    
+
     return defs;
 }
 

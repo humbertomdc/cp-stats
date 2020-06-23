@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Input, Header, Icon } from 'semantic-ui-react';
+import { Menu, Input, Header, Icon, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 class Navbar extends React.Component {
@@ -53,6 +53,13 @@ class Navbar extends React.Component {
                 }}
             >
                 <Menu.Item>
+                    <Image
+                        src={process.env.PUBLIC_URL + "/codeforces-stats-logo.png"}
+                        size="mini"
+                        
+                    />
+                </Menu.Item>
+                <Menu.Item>
                     <Header
                         as={ Link } to="/"
                         size="large"
@@ -66,7 +73,6 @@ class Navbar extends React.Component {
                 <Menu.Item href="https://github.com/humbertoatondo/cp-stats" target="_blank" position="right">
                     <Icon name="github" size="large" fitted />
                 </Menu.Item>
-
             </Menu>
         );
     }
