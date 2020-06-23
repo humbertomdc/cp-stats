@@ -1,0 +1,6 @@
+.main.segment {
+    background-color: "#436464";
+    width: calc(100vw - 60%);
+    min-width: 800px;
+    max-width: 1200px;
+}

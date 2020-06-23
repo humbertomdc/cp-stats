@@ -1,5 +1,6 @@
 import { Header, Grid, Rail, Ref, Segment, Sticky, Container } from 'semantic-ui-react';
 
+import "../style/mainUserView.css"
 import React from 'react';
 import * as CodeforcesAPI from '../api/CodeforcesAPI';
 import * as ProcessData from '../helpers/ProcessData';
@@ -172,13 +173,23 @@ class MainUserView extends React.Component {
             <Grid columns={2} centered padded>
                 <Grid.Column>
                     <Ref innerRef={this.contextRef}>
-                        <Segment style={{ minWidth: "1000px", top: 15 }}>
+                        <Segment className="main segment" style={{ top: 16 }}>
                             {/* Main View */}
-                            <Header as="h2" icon="user secret" content={`${this.state.userHandle}'s Rating`} style={{ color: "#3d3d3d" }} />
+                            <Header
+                                as="h2"
+                                icon="user secret"
+                                content={`${this.state.userHandle}'s Rating`}
+                                style={{ color: "#3d3d3d" }}
+                            />
                             <RatingLineChart ratingData={this.state.userRating} />
                             <Grid>
                                 <Grid.Column width={8}>
-                                    <Header as="h2" content="Verdicts" textAlign="center" style={{ color: "#3d3d3d" }} />
+                                    <Header
+                                        as="h2"
+                                        content="Verdicts"
+                                        textAlign="center"
+                                        style={{ color: "#3d3d3d" }}
+                                    />
                                     <PieChart
                                         data={this.state.userVerdicts}
                                         isVerdict={true}
@@ -188,7 +199,12 @@ class MainUserView extends React.Component {
                                     />
                                 </Grid.Column>
                                 <Grid.Column width={8}>
-                                    <Header as="h2" content="Tags" textAlign="center" style={{ color: "#3d3d3d" }} />
+                                    <Header
+                                        as="h2"
+                                        content="Tags"
+                                        textAlign="center"
+                                        style={{ color: "#3d3d3d" }}
+                                    />
                                     <PieChart
                                         data={this.state.userProblemTags}
                                         isVerdict={false}
@@ -198,15 +214,30 @@ class MainUserView extends React.Component {
                                     />
                                 </Grid.Column>
                             </Grid>
-                            <Header as="h2" icon="chart pie" content={`${this.state.userHandle}'s Strengths By Tag`} style={{ color: "#3d3d3d" }} />
+                            <Header
+                                as="h2"
+                                icon="chart pie"
+                                content={`${this.state.userHandle}'s Strengths By Tag`}
+                                style={{ color: "#3d3d3d" }}
+                            />
                             <RadarChart data={this.state.userStrengthsByTag} />
-                            <Header as="h2" icon="area graph" content="User Distribution" style={{ color: "#3d3d3d" }} />
+                            <Header
+                                as="h2"
+                                icon="area graph"
+                                content="User Distribution"
+                                style={{ color: "#3d3d3d" }}
+                            />
                             <LineChart
                                 data={this.state.ratedUsers}
                                 binSize={this.state.ratedUsersBinSize}
                                 onBinSizeChange={this.updateBinSize}
                             />
-                        <Header as="h2" icon="fire" content="Rating vs Time" style={{ color: "#3d3d3d" }} />
+                            <Header
+                                as="h2"
+                                icon="fire"
+                                content="Rating vs Time"
+                                style={{ color: "#3d3d3d" }}
+                            />
                             <ScatterPlot
                                 data={this.state.rankByTimeOfExperience}
                                 userHandle={this.state.userHandle}
