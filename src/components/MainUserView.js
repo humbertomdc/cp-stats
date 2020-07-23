@@ -120,7 +120,7 @@ class MainUserView extends React.Component {
         });
 
         // Get rated list.
-        CodeforcesAPI.getRatedList(false).then((ratedList) => {
+        CodeforcesAPI.getRatedList(true).then((ratedList) => {
             // Process data.
             const data = ProcessData.parseUsersData(ratedList, this.state.ratedUsersBinSize, this.state.userInfo.rating);
             const dataRankByTimeOfExperience = ProcessData.parseRankByTimeOfExperience(ratedList, this.state.userInfo);

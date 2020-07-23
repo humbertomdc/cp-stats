@@ -419,7 +419,7 @@ export const parseRankByTimeOfExperience = (data, userInfo) => {
             x += user.rating;
             y += timeSinceRegistration;
             counter++;
-            if (counter === 100) {
+            if (counter === 10) {
                 index = getIndexForRankByTime(x / counter);
                 const dataPoint = {
                     id: "bad",
