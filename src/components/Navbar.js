@@ -13,7 +13,7 @@ class Navbar extends React.Component {
      * route with inputText as parameter.
      * @param {Object} event Key pressed event.
      */
-    keyPress = (event) => {
+    keyPress = (event) => { 
         // The key code for enter is 13.
         if (event.keyCode === 13) {
             const handle = this.state.inputText;
